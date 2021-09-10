@@ -7,36 +7,37 @@ import { BadRequestException } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+  ) {}
 
-    constructor(
-        @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>
-    ) {}
-    
-    create(data: AddUserDto) : Promise<UserDto> {
-        const user = this.userRepository.create(data);
-        return this.userRepository.save(user).then( (value) => {
-            return UserDto.from(value);
-        }).catch((err)=> {
-            //23505 - unique_violation
-            if (err.code === '23505') {
-                throw new BadRequestException(
-                  'Account with this email already exists.',
-                );
-              }
-              return err;
-        });
-    }
+  create(data: AddUserDto): Promise<UserDto> {
+    const user = this.userRepository.create(data);
+    return this.userRepository
+      .save(user)
+      .then((value) => {
+        return UserDto.from(value);
+      })
+      .catch((err) => {
+        //23505 - unique_violation
+        if (err.code === '23505') {
+          throw new BadRequestException(
+            'Account with this email already exists.',
+          );
+        }
+        return err;
+      });
+  }
 
-    findAll(limit: number, offset: number): Promise<[UserDto[], number]> {
-        return this.userRepository.findAndCount({
-            skip: offset,
-            take: limit,
-        });
-    }
+  findAll(limit: number, offset: number): Promise<[UserDto[], number]> {
+    return this.userRepository.findAndCount({
+      skip: offset,
+      take: limit,
+    });
+  }
 
-    findById(id: number) : Promise<UserDto> {
-        return this.userRepository.findOneOrFail(id);
-    }
-
-
+  findById(id: number): Promise<UserDto> {
+    return this.userRepository.findOneOrFail(id);
+  }
 }
