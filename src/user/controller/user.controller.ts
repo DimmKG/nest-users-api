@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, Query, Param, NotFoundException} from '@nestjs/common';
+import { Body, Controller, Post, Get, Query, Param, NotFoundException, BadRequestException} from '@nestjs/common';
 import { AddUserDto, UserDto } from '../models/user.dto';
 import { UserService } from '../service/user.service';
 
@@ -31,6 +31,10 @@ export class UserController {
 
     @Get(':id')
     async get(@Param() params) : Promise<UserDto> {
+        if (!(Number(params.id) > 0)) {
+            throw new BadRequestException('ID must be an integer number');
+        }
+        
         return this.userService.findById(params.id).catch((err) => {
             throw new NotFoundException(`User with id ${params.id} not found!`);
         });
