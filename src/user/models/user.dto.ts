@@ -1,5 +1,10 @@
-import { IsEmail, IsNotEmpty, Length, Matches } from 'class-validator';
-import { Exclude } from 'class-transformer';
+import {
+  IsEmail,
+  IsNotEmpty,
+  Length,
+  Matches,
+  IsOptional,
+} from 'class-validator';
 import { UserEntity } from './user.entity';
 
 export class AddUserDto {
@@ -46,4 +51,17 @@ export class UserDto {
     user.deletedAt = entity.deletedAt;
     return user;
   }
+}
+
+export class UpdateUserDto {
+  @IsOptional()
+  @IsNotEmpty()
+  @Length(3, 256)
+  name: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsEmail()
+  @Length(5, 256)
+  email: string;
 }

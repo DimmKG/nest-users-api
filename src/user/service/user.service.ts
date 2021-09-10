@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
-import { AddUserDto, UserDto } from '../models/user.dto';
-import { BadRequestException } from '@nestjs/common';
+import { AddUserDto, UserDto, UpdateUserDto } from '../models/user.dto';
 
 @Injectable()
 export class UserService {
@@ -14,20 +13,9 @@ export class UserService {
 
   create(data: AddUserDto): Promise<UserDto> {
     const user = this.userRepository.create(data);
-    return this.userRepository
-      .save(user)
-      .then((value) => {
-        return UserDto.from(value);
-      })
-      .catch((err) => {
-        //23505 - unique_violation
-        if (err.code === '23505') {
-          throw new BadRequestException(
-            'Account with this email already exists.',
-          );
-        }
-        return err;
-      });
+    return this.userRepository.save(user).then((value) => {
+      return UserDto.from(value);
+    });
   }
 
   findAll(limit: number, offset: number): Promise<[UserDto[], number]> {
@@ -38,6 +26,18 @@ export class UserService {
   }
 
   findById(id: number): Promise<UserDto> {
-    return this.userRepository.findOneOrFail(id);
+    return this.userRepository.findOneOrFail(id).then((value) => {
+      return UserDto.from(value);
+    });
+  }
+
+  update(id: number, data: UpdateUserDto): Promise<UserDto> {
+    return this.userRepository.update(id, data).then(() => {
+      return this.findById(id);
+    });
+  }
+
+  delete(id: number): Promise<any> {
+    return this.userRepository.softDelete(id);
   }
 }
