@@ -34,5 +34,9 @@ export class UserService {
         });
     }
 
+    findById(id: number) : Promise<UserDto> {
+        return this.userRepository.findOneOrFail(id);
+    }
+
 
 }
