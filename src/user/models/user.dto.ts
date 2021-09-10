@@ -21,6 +21,9 @@ export class AddUserDto {
 }
 
 export class UserDto {
+    
+    id: number;
+
     @IsNotEmpty()
     @Length(3, 256)
     name: string;
@@ -36,6 +39,7 @@ export class UserDto {
 
    static from(entity: UserEntity) : UserDto {
         let user = new UserDto();
+        user.id = entity.id;
         user.name = entity.name;
         user.email = entity.email;
         user.createdAt = entity.createdAt;

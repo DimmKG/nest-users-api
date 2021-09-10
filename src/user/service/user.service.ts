@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
 import { AddUserDto, UserDto } from '../models/user.dto';
 import { BadRequestException } from '@nestjs/common';
+import { map } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -24,6 +25,13 @@ export class UserService {
                 );
               }
               return err;
+        });
+    }
+
+    findAll(limit: number, offset: number): Promise<[UserDto[], number]> {
+        return this.userRepository.findAndCount({
+            skip: offset,
+            take: limit,
         });
     }
 
