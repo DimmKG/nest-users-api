@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../models/user.entity';
 import { AddUserDto, UserDto } from '../models/user.dto';
 import { BadRequestException } from '@nestjs/common';
-import { map } from 'rxjs';
 
 @Injectable()
 export class UserService {
