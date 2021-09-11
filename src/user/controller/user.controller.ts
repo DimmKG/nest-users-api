@@ -9,6 +9,7 @@ import {
   NotFoundException,
   BadRequestException,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { AddUserDto, UserDto, UpdateUserDto } from '../models/user.dto';
 import { UserService } from '../service/user.service';
@@ -34,7 +35,7 @@ export class UserController {
             'Account with this email already exists.',
           );
         }
-        return err;
+        throw err;
       });
   }
 
@@ -46,7 +47,9 @@ export class UserController {
     const offset = Number.isInteger(Number(query.offset))
       ? Number(query.offset)
       : 0;
-    return this.userService.findAll(limit, offset).then((value) => {
+    const name = query.name;
+    const res = this.userService.findAll(limit, offset, name);
+    return res.then((value) => {
       return {
         total: value[1],
         data: value[0],
@@ -55,42 +58,38 @@ export class UserController {
   }
 
   @Get(':id')
-  async get(@Param() params): Promise<UserDto> {
-    if (!(Number(params.id) > 0)) {
-      throw new BadRequestException('ID must be an integer number');
-    }
-
-    return this.userService.findById(params.id).catch((err) => {
-      throw new NotFoundException(`User with id ${params.id} not found!`);
+  async get(@Param('id', ParseIntPipe) id: number): Promise<UserDto> {
+    return this.userService.findById(id).catch((err) => {
+      throw new NotFoundException(`User with id ${id} not found!`);
     });
   }
 
   @Put(':id')
-  async update(@Param() params, @Body() newData: UpdateUserDto): Promise<any> {
-    if (!(Number(params.id) > 0)) {
-      throw new BadRequestException('ID must be an integer number');
-    }
-
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() newData: UpdateUserDto,
+  ): Promise<any> {
     return this.userService
-      .update(params.id, newData)
+      .update(id, newData)
       .then((value) => {
         return {
           message: 'User successfuly updated',
           user: value,
         };
       })
-      .catch(() => {
-        throw new NotFoundException(`User with id ${params.id} not found!`);
+      .catch((err) => {
+        if (err.code === '23505') {
+          throw new BadRequestException(
+            'Account with new email already exists.',
+          );
+        }
+        throw new NotFoundException(`User with id ${id} not found!`);
       });
   }
 
   @Delete(':id')
-  async deleteUser(@Param() params): Promise<any> {
-    if (!(Number(params.id) > 0)) {
-      throw new BadRequestException('ID must be an integer number');
-    }
-
-    return this.userService.delete(params.id).then((value) => {
+  async deleteUser(@Param('id', ParseIntPipe) id: number): Promise<any> {
+    return this.userService.delete(id).then((value) => {
       if (value.affected === 1) {
         return {
           message: 'User deleted successfuly!',
