@@ -1,0 +1,389 @@
+{
+	"info": {
+		"_postman_id": "7e30d6de-798d-455a-b669-c164495edd70",
+		"name": "Users API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Mark Jason\",\n    \"email\": \"example123@test.com\",\n    \"password\": \"45454854gfAgf5849a\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users"
+					]
+				},
+				"description": "Adds user to database\n\n`email` is unique per user."
+			},
+			"response": [
+				{
+					"name": "Add User",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Steve Keers\",\n    \"email\": \"ex1456353@test.com\",\n    \"password\": \"45454854gfAgf5849a\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "162"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"a2-efFAskZssSjn7fFY1dqsgMx4hvg\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 11 Sep 2021 06:51:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User successfully created\",\n    \"user\": {\n        \"id\": 23,\n        \"name\": \"Steve Keers\",\n        \"email\": \"ex1456353@test.com\",\n        \"createdAt\": \"2021-09-11T06:51:03.407Z\",\n        \"deletedAt\": null\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/users?offset=0&limit=2",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "0"
+						},
+						{
+							"key": "limit",
+							"value": "2"
+						},
+						{
+							"key": "name",
+							"value": "Steve",
+							"description": "Optional. Search by Name. Separate words by spaces.",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Get user list\n\nFor full-text search by name, use `name` parameter"
+			},
+			"response": [
+				{
+					"name": "Get Users with Name",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/users?offset=0&limit=2&name=Steve",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "Optional. Skip n elements before output."
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"description": "Optional. Max elements per query."
+								},
+								{
+									"key": "name",
+									"value": "Steve",
+									"description": "Optional. Search by Name. Separate words by spaces."
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "242"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"f2-Z8rhikuXUJJuVpuGoP3xJNWgujc\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 11 Sep 2021 07:02:31 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"total\": 2,\n    \"data\": [\n        {\n            \"id\": 19,\n            \"name\": \"Steve\",\n            \"email\": \"test@email.com\",\n            \"createdAt\": \"2021-09-10T14:44:09.441Z\",\n            \"deletedAt\": null\n        },\n        {\n            \"id\": 23,\n            \"name\": \"Steve Keers\",\n            \"email\": \"ex1456353@test.com\",\n            \"createdAt\": \"2021-09-11T06:51:03.407Z\",\n            \"deletedAt\": null\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get User by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/users/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get User by ID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/users/19",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"19"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "106"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"6a-2f/cgimRkcuKYTEWmlRiDzM6Z4o\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 11 Sep 2021 07:06:22 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 19,\n    \"name\": \"Steve\",\n    \"email\": \"test1@email.com\",\n    \"createdAt\": \"2021-09-10T14:44:09.441Z\",\n    \"deletedAt\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8000/users/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"3"
+					]
+				},
+				"description": "Safe-delete user by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Steve\",\n    \"email\": \"test12@email.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/users/5",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"5"
+					]
+				},
+				"description": "Updates `email` and `name`"
+			},
+			"response": [
+				{
+					"name": "Update User",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Steve\",\n    \"email\": \"test1@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/users/19",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"users",
+								"19"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "152"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"98-rwtZc21SQyQ7utlI6DOSl0wHCVI\""
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 11 Sep 2021 07:05:59 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User successfuly updated\",\n    \"user\": {\n        \"id\": 19,\n        \"name\": \"Steve\",\n        \"email\": \"test1@email.com\",\n        \"createdAt\": \"2021-09-10T14:44:09.441Z\",\n        \"deletedAt\": null\n    }\n}"
+				}
+			]
+		}
+	]
+}
